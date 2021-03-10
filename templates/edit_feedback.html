@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+<!--  -->
+{% block title %}Add feedback{% endblock %}
+<!--  -->
+{% block content %}
+<h1>Lemme have it!</h1>
+<form action="/feedback/{{fb.fb_id}}/update" method="POST">
+  {{form.hidden_tag()}}
+  <!--  -->
+  {% if form.title.widget.input_type !='hidden' %}
+  <div class="mb-3">
+    {{ form.title.label(class_='form-label') }}
+    <!--  -->
+    {{ form.title(class_='form-control', value=fb.title,
+    **{'ng-model':'NameModel'}) }}
+    <!--  -->
+    {% endif %}
+    <!--  -->
+    {% for error in form.title.errors %}
+    <span class="form-text text-danger">{{ error }}</span>
+    {% endfor %}
+    <!--  -->
+    {% if form.content.widget.input_type != 'hidden' %}
+    <!--  -->
+    {{ form.content.label(class_='form-label') }}
+    <!--  -->
+    {{ form.content(class_='form-control', value=fb.content,
+    **{'ng-model':'NameModel'}) }}
+    <!--  -->
+    {% endif %}
+    <!--  -->
+    {% for error in form.content.errors %}
+    <span class="form-text text-danger">{{ error }}</span>
+    {% endfor %}
+  </div>
+  <!---->
+  <button class="btn btn-primary" type="submit">Fix what you said</button>
+</form>
+<!--  -->
+{% endblock %}

@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+<!--  -->
+{% block title %} User: {{user.username}}{% endblock %}
+<!--  -->
+{% block content %}
+<h1>{{user.username}} on Feedback, Inc</h1>
+<div class="row justify-content-center">
+  <div class="col-4">
+    <form action="/users/{{user.username}}/delete" method="POST">
+      <div class="card">
+        <h5 class="card-header">Hi {{user.username}}</h5>
+        <div class="card-body">
+          <h5 class="card-title">Here is your account details...</h5>
+          <p class="card-text"><b>Email:</b> {{user.email}}</p>
+          <p class="card-text"><b>First name:</b> {{user.first_name}}</p>
+          <p class="card-text"><b>Last name:</b> {{user.last_name}}</p>
+          <button class="btn btn-danger" type="submit">Delete myself</button>
+          <a href="/users/{{user.username}}/feedback/add" class="btn btn-info"
+            >Add Feedback!</a
+          >
+        </div>
+      </div>
+    </form>
+    <h3>Your Feedback</h3>
+    <div class="list-group">
+      {% for post in fb %}
+      <!--  -->
+      {% if post.username == session['user_id'] %}
+      <a
+        href="/feedback/{{post.fb_id}}/update"
+        class="list-group-item list-group-item-action"
+        aria-current="true"
+      >
+        <div class="d-flex w-100 justify-content-between">
+          <h5 class="mb-1">{{ post.title }}</h5>
+          <small>3 days ago</small>
+        </div>
+        <p class="mb-1">{{ post.content }}</p>
+        <div class="row">
+          <div class="col-10"><small>{{ post.username }}</small></div>
+          <form
+            class="col-2"
+            action="/feedback/{{post.fb_id}}/delete"
+            method="POST"
+          >
+            <button type="submit" class="btn btn-danger">X</button>
+          </form>
+        </div>
+      </a>
+      {% endif %}
+      <!--  -->
+      {% endfor %}
+    </div>
+  </div>
+  <div class="col-8">
+    <h3>All Feedback</h3>
+    <div class="list-group">
+      {% for post in fb %}
+      <a
+        href="#"
+        class="list-group-item list-group-item-action"
+        aria-current="true"
+      >
+        <div class="d-flex w-100 justify-content-between">
+          <h5 class="mb-1">{{ post.title }}</h5>
+          <small>3 days ago</small>
+        </div>
+        <p class="mb-1">{{ post.content }}</p>
+        <small>{{ post.username }}</small>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}
